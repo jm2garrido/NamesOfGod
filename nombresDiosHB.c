@@ -19,38 +19,32 @@
  *      MA 02110-1301, USA.
  */
 
-/* linux gcc nombresDios1_0.c -march=x86-64 -o nombresDios */
 
 #include <stdio.h>
 #include <time.h>
 
-int main(int argc, char** argv)
-{
 #define CAR  (13)
 #define POS  (9)
 #define MAXBLOCK  (3)
 #define TRUE (1)
 #define FALSE (0)
-/* esto es la edad media */		
-		
-		long long sum = 0;
-		long long sumOK = 0;
-		/* supongo long long 64 bits */
-		
-		
-		int cell[POS];
-		int ended = FALSE;
-	
-		int l,k,j,e;
-		/* vaya mierda, tengo que declarar esto aqui */
-	
-		for(l=0; l<POS;l++) cell[l]=0;
-		/* la edad media, no hay duda */
-		
-		printf("Version %ld, CAR %d, POS %d, MAXBLOCK %d\n",
-				sizeof(int)*8,CAR,POS,MAXBLOCK);
 
-		clock_t begin = clock();
+long long sum = 0;
+long long sumOK = 0;
+/* supongo long long 64 bits */
+
+void element(int first_row)
+{
+		
+	int cell[POS];
+	int ended = FALSE;
+	
+	int l,k,j,e;
+
+	
+	for(l=0; l<POS-1;l++) cell[l]=0;
+	cell[POS-1] = first_row;
+		
 		
 		do {	
 			sum++;
@@ -99,7 +93,7 @@ int main(int argc, char** argv)
 			{
 				cell[i]=0;
 				i++;
-				if(i<POS)
+				if(i<POS-1)
 				{
 					cell[i]++;
 				}
@@ -111,14 +105,32 @@ int main(int argc, char** argv)
 			}
 
 		} while(!ended);
+
+
+}
+
+
+int main(int argc, char** argv)
+{
+
+	printf("Version %ld, CAR %d, POS %d, MAXBLOCK %d\n",sizeof(int)*8,CAR,POS,MAXBLOCK);		
 		
-		clock_t end = clock();
+	clock_t begin = clock();
+	
+	int iTh;	
+	for(iTh = 0; iTh < CAR; iTh++)
+	{
+		element(iTh);
+	}		
+
 		
-		printf("Sum   %lld \n",sum);
+	clock_t end = clock();
 		
-		printf("SumOK %lld \n",sumOK);
+	printf("Sum   %lld \n",sum);
 		
-		printf("Time: %ld \n",((end-begin)*1000)/CLOCKS_PER_SEC);
+	printf("SumOK %lld \n",sumOK);
+		
+	printf("Time: %ld \n",((end-begin)*1000)/CLOCKS_PER_SEC);
 
 	return 0;
 }
