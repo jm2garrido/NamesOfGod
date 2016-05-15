@@ -80,7 +80,7 @@ def check_and_generate(first_number):
 
 #las constantes 13, 9, 3
 CAR = 13
-POS = 6
+POS = 7
 MAXBLOCK = 3
 
 #estos numeros pueden ser grandes, mas de 32 bits

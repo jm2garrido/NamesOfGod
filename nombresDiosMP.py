@@ -18,20 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 # Version para python 3
-# 2016-5-1
+# 2016-5-15
 
 import time
 import array
-import threading
+import multiprocessing as mp
 import logging
+import ctypes
 
-def check_and_generate(first_number):
-    # internal values of each thread
-    global sumMT
-    global sumOKMT
-    global lock
+def check_and_generate(first_number,sumMT,sumOKMT):
 
-    #logging.info("Entering {0}".format(threading.current_thread().name))
+    #logging.info("Entering {0}".format(mp.current_process().name))
     sum = 0
     sumOK = 0
     cell = array.array('i')
@@ -78,11 +75,12 @@ def check_and_generate(first_number):
                 break
     # while ended, adding up the results
 
-    with lock:    
-        sumMT += sum
-        sumOKMT += sumOK
-
-    #logging.info("exiting {0} {1} {2}".format(threading.current_thread().name,sumMT,sumOKMT))
+    with sumMT.get_lock():    
+        sumMT.value += sum
+    with sumOKMT.get_lock():
+        sumOKMT.value += sumOK
+    #this can be erroneus, some other proccess can changed the values
+    #logging.info("exiting {0} {1} {2}".format(mp.current_process().name,sumMT.value,sumOKMT.value))
 
 
 #las constantes 13, 9, 3
@@ -90,12 +88,12 @@ CAR = 13
 POS = 7
 MAXBLOCK = 3
 
-#estos numeros pueden ser grandes, mas de 32 bits
-#compartidos para todos los threads
-sumMT = 0
-sumOKMT = 0
-
-lock = threading.Lock()
+#this numbers can be very big, we need 64 bits here
+#in theory, we must put "Q" here, but it does't work
+#I assume that c_longlong is 64 bits
+#shared in all the process
+sumMT = mp.Value(ctypes.c_longlong,0)
+sumOKMT = mp.Value(ctypes.c_longlong,0)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -110,7 +108,7 @@ begin = time.time()
 
 workers = []
 for n in range(CAR):
-    t = threading.Thread(target=check_and_generate,name=str(n), args= (n,))
+    t = mp.Process(target=check_and_generate,name=str(n), args= (n,sumMT,sumOKMT))
     workers.append(t)
     t.start()
 
@@ -121,8 +119,8 @@ for i in workers:
 
 end = time.time()
 
-print ("Sum   {0}".format(sumMT))
-print ("SumOK {0}".format(sumOKMT))
+print ("Sum   {0}".format(sumMT.value))
+print ("SumOK {0}".format(sumOKMT.value))
 print ("Time: {0}".format((end-begin)*1000))
         
 

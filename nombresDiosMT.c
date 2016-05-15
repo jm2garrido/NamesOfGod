@@ -124,8 +124,11 @@ int main(int argc, char** argv)
 
 	omp_set_num_threads(CAR);		
 
-	clock_t begin = clock();
-	
+	//clock_t begin = clock();
+	//clock give as proccess time, for MP is way bigger than wall clock
+	//This function give us the wall clock
+	double begin = omp_get_wtime();	
+
 	#pragma omp parallel for reduction(+:sum,sumOK)	
 	for(int iTh = 0; iTh < CAR; iTh++)
 	{
@@ -133,13 +136,14 @@ int main(int argc, char** argv)
 	}		
 
 		
-	clock_t end = clock();
-		
+	//clock_t end = clock();
+	double end = omp_get_wtime();	
+	
 	printf("Sum   %lld \n",sum);
 		
 	printf("SumOK %lld \n",sumOK);
 		
-	printf("Time: %ld \n",((end-begin)*1000)/CLOCKS_PER_SEC);
+	printf("Time: %f \n",((end-begin)*1000.0));
 
 	return 0;
 }
