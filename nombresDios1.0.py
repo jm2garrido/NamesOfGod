@@ -22,7 +22,7 @@ import array
 
 #las constantes
 CAR = 13
-POS = 6
+POS = 7
 MAXBLOCK = 3
 
 #estos numeros pueden ser grandes, mas de 32 bits
@@ -37,6 +37,10 @@ for i in range(POS):
     cell.append(0)
 
 ended = False
+
+print("Caracteres:   {}".format(CAR))
+print("Posiciones:   {}".format(POS))
+print("Repeticiones: {}".format(MAXBLOCK))
 
 # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
 # por coherencia con otras versiones, queremos medir el wall-time

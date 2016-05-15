@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Thanks to Carlos Arce
 
 =end
-
+# 13,9,3
 CAR = 13 	# 13 caracteres posibles
-POS = 6 	# 9 posiciones
+POS = 7 	# 9 posiciones
 MAXBLOCK = 3	# lo máximo admitido
 
 
@@ -39,6 +39,8 @@ def nombresDios
 
 	cell = [0]  # crea un vector con una posición
 	(POS-1).times { cell << 0 }  # agrega las demás posiciones para que quede un vector de POS posiciones
+
+
 
 	start = Time.now
 

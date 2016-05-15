@@ -25,6 +25,7 @@ namespace nombresDios
 	{
 		public static void Main(string[] args)
 		{
+		// 13,9,3
 		const int CAR = 13;
 		const int POS = 9;
 		const int MAXBLOCK = 3;
@@ -36,6 +37,10 @@ namespace nombresDios
 		int[] cell = new int[POS];
 		bool ended = false;
 		
+		Console.WriteLine("Caracteres   "+CAR);
+		Console.WriteLine("Posiciones   "+POS);
+		Console.WriteLine("Repeticiones "+MAXBLOCK);
+
 		// medicion del tiempo en C#
 		DateTime begin = DateTime.Now;
 

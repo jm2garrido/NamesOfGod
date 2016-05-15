@@ -25,7 +25,7 @@ import array
 
 #las constantes 13, 9, 3
 CAR = 13
-POS = 6
+POS = 7
 MAXBLOCK = 3
 
 print("Caracteres:   {}".format(CAR))

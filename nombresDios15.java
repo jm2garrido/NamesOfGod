@@ -26,7 +26,7 @@ public class nombresDios {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		// 13, 9, 3
 		final int CAR = 13;
 		final int POS = 9;
 		final int MAXBLOCK = 3;
@@ -38,6 +38,10 @@ public class nombresDios {
 		int cell[] = new int[POS];
 		boolean ended = false;
 	
+		System.out.println("Caracteres   "+CAR);
+		System.out.println("Posiciones   "+POS);
+		System.out.println("Repeticiones "+MAXBLOCK);
+
 		long begin = System.currentTimeMillis();
 		
 		do {	

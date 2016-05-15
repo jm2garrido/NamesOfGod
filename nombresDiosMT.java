@@ -30,15 +30,19 @@ public class nombresDiosMT {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-		final int CAR = 13;
-		final int POS = 9;
-		final int MAXBLOCK = 3;
+	// 13, 9, 3
+	final int CAR = 13;
+	final int POS = 9;
+	final int MAXBLOCK = 3;
 
         // somos atomicos!!!
         final AtomicLong sumMT = new AtomicLong(0);
         final AtomicLong sumOKMT = new AtomicLong(0);
         final AtomicInteger thNum = new AtomicInteger(0);
+
+	System.out.println("Caracteres   "+CAR);
+	System.out.println("Posiciones   "+POS);
+	System.out.println("Repeticiones "+MAXBLOCK);
 
         long begin = System.currentTimeMillis();
 
