@@ -19,18 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Thanks to Carlos Arce
 
 =end
-# 13,9,3
-CAR = 13 	# 13 caracteres posibles
-POS = 7 	# 9 posiciones
-MAXBLOCK = 3	# lo máximo admitido
 
 
 
-def nombresDios 
 
-	print "Car      #{CAR}\n"
-	print "Pos      #{POS}\n"
-	print "MAXBLOCK #{MAXBLOCK}\n"
+def nombresDios(car,pos,maxblock)
 
 	sum = 0
 	sumOK = 0
@@ -38,11 +31,7 @@ def nombresDios
 	ended = false
 
 	cell = [0]  # crea un vector con una posición
-	(POS-1).times { cell << 0 }  # agrega las demás posiciones para que quede un vector de POS posiciones
-
-
-
-	start = Time.now
+	(pos-1).times { cell << 0 }  # agrega las demás posiciones para que quede un vector de POS posiciones
 
 	# comienza el bucle principal
 	begin
@@ -63,9 +52,9 @@ def nombresDios
 					numOK = true;
 				end
 			e+=1
-			end while ((!numOK) && (e < k+MAXBLOCK+1))		
+			end while ((!numOK) && (e < k+maxblock+1))		
 		k+=1
-		end while (k<= (POS-MAXBLOCK) && numOK)
+		end while (k<= (pos-maxblock) && numOK)
 
 
 
@@ -83,11 +72,11 @@ def nombresDios
 		# incrementar el número
 		cell[0]+=1
 		i=0
-		while(cell[i]>=CAR)
+		while(cell[i]>=car)
 			cell[i]=0
 			i+=1
 
-			if(i<POS)
+			if(i<pos)
 				cell[i]+=1
 			else
 				ended = true
@@ -95,18 +84,37 @@ def nombresDios
 			end
 		end
 
-
-
 	end while(!ended)  
 	
-	ending = Time.now
-
-	print "Sum    #{sum}\n"
-	print "SumOK  #{sumOK}\n"
-	print "Time   #{(ending-start)*1000}\n"
+    return sum, sumOK
 
 end
 
+# 13,9,3
+CAR = 13 	# 13 caracteres posibles
+POS = 7 	# 9 posiciones
+MAXBLOCK = 3	# lo máximo admitido
 
+if (ARGV.length == 3)
+    car = ARGV[0].to_i
+    pos = ARGV[1].to_i
+    maxblock = ARGV[2].to_i
+else
+    car = CAR
+    pos = POS
+    maxblock = MAXBLOCK
+end
 
-nombresDios
+print "Car      #{car}\n"
+print "Pos      #{pos}\n"
+print "MAXBLOCK #{maxblock}\n"
+
+start = Time.now
+
+    sum, sumOK = nombresDios car,pos,maxblock
+
+ending = Time.now
+
+print "Sum    #{sum}\n"
+print "SumOK  #{sumOK}\n"
+print "Time   #{((ending-start)*1000).to_i}\n"

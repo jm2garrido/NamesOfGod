@@ -54,7 +54,9 @@ int main(int argc, char** argv)
 			pos = atoi(argv[2]);
 			maxblock = atoi(argv[3]);
 		}
-	
+
+        int efPos = pos-maxblock;	
+
 		int *cell = calloc(pos,sizeof(int));	
 	
 		
@@ -67,10 +69,11 @@ int main(int argc, char** argv)
 			sum++;
 			
 			int numOK = TRUE;
-			for(k=0; (numOK) && (k<pos-maxblock);k++)
+			for(k=0; (numOK) && (k<efPos);k++)
 			{
 				numOK = FALSE;
-				for(e = k + 1; (!numOK) && (e < k+maxblock+1); e++)
+                int limM = k+maxblock+1;
+				for(e = k + 1; (!numOK) && (e < k+limM); e++)
 				{
 					
 					if(cell[k]!=cell[e])

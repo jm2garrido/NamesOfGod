@@ -67,21 +67,29 @@ int main(int argc, char** argv)
 			sum++;
 			
 			int numOK = TRUE;
-			for(k=0; (numOK) && (k<pos-maxblock);k++)
+            int rep = maxblock;			
+            for(k=0; k<pos-1;k++)
 			{
-				numOK = FALSE;
-				for(e = k + 1; (!numOK) && (e < k+maxblock+1); e++)
-				{
-					
-					if(cell[k]!=cell[e])
-					{
-						
-						numOK = TRUE;
-					}
-				}
-				
-			}
-				
+                if(cell[k]!=cell[k+1])
+                {
+                    rep = maxblock;
+                }
+                else
+                {   
+                    if (--rep)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        /* rep es cero, ya llevamos maxblock repeticiones -> numero malo */
+                        numOK = FALSE;
+                        break;
+                    }
+
+                }
+            }    
+								
 			
 			if(numOK)
 			{
@@ -103,9 +111,9 @@ int main(int argc, char** argv)
 				*/
 			}
 			
-			
-			cell[0]++;
-			int i=0;
+
+		    cell[0]++;
+		    int i=0;
 			while(cell[i]>=car)
 			{
 				cell[i]=0;

@@ -105,4 +105,10 @@ hs_err_pid*
 *.exe
 *.out
 *.app
-
+/C/nombresDios1_0
+/C/nombresDios1_1
+/C/nombresDios1_2
+/C/nombresDios1_3
+/C/nombresDios1_4
+/C/nombresDios1_5
+/C/nombresDios1_6
