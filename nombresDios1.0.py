@@ -17,13 +17,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+# Version para python 2
+# 
+
 import time
 import array
 
-#las constantes
+#las constantes 13, 9, 3
 CAR = 13
 POS = 7
 MAXBLOCK = 3
+
+print("Caracteres:   {}".format(CAR))
+print("Posiciones:   {}".format(POS))
+print("Repeticiones: {}".format(MAXBLOCK))
+
 
 #estos numeros pueden ser grandes, mas de 32 bits
 # hay que usar los numeros de precision arbitraria
@@ -37,10 +45,6 @@ for i in range(POS):
     cell.append(0)
 
 ended = False
-
-print("Caracteres:   {}".format(CAR))
-print("Posiciones:   {}".format(POS))
-print("Repeticiones: {}".format(MAXBLOCK))
 
 # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
 # por coherencia con otras versiones, queremos medir el wall-time
