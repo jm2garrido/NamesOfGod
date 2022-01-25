@@ -24,6 +24,7 @@ import time
 import array
 import threading
 import logging
+import sys
 
 def check_and_generate(first_number):
     # internal values of each thread
@@ -32,27 +33,27 @@ def check_and_generate(first_number):
     global lock
 
     #logging.info("Entering {0}".format(threading.current_thread().name))
-    sum = 0
+    sum_ = 0
     sumOK = 0
     cell = array.array('i')
 
-    for i in range(POS-1):
+    for i in range(pos-1):
         cell.append(0)
     cell.append(first_number)
 
     ended = False
 
     while not ended:
-        sum+=1
+        sum_+=1
 
         numOK = True
 
         #bucle chapucero para emular el for de java
         k=0
-        while ((numOK) and (k<POS-MAXBLOCK)):
+        while ((numOK) and (k<pos-maxblock)):
             numOK=False
             e = k + 1
-            while ((not numOK) and (e < k+MAXBLOCK+1)):
+            while ((not numOK) and (e < k+maxblock+1)):
                 #print "k: {0} e: {e}".format(k,e)
                 if (cell[k]!=cell[e]):
                     #print "Verdad"
@@ -67,11 +68,11 @@ def check_and_generate(first_number):
         cell[0]+=1
 
         i=0    
-        while(cell[i]>=CAR):
+        while(cell[i]>=car):
             cell[i]=0
             i+=1
             # POS-1, POS is now fixed in thread
-            if i<POS-1:
+            if i<pos-1:
                 cell[i]+=1
             else:
                 ended= True
@@ -79,50 +80,60 @@ def check_and_generate(first_number):
     # while ended, adding up the results
 
     with lock:    
-        sumMT += sum
+        sumMT += sum_
         sumOKMT += sumOK
 
     #logging.info("exiting {0} {1} {2}".format(threading.current_thread().name,sumMT,sumOKMT))
 
 
-#las constantes 13, 9, 3
-CAR = 13
-POS = 7
-MAXBLOCK = 3
-
-#estos numeros pueden ser grandes, mas de 32 bits
-#compartidos para todos los threads
-sumMT = 0
-sumOKMT = 0
-
-lock = threading.Lock()
-
-logging.basicConfig(level=logging.INFO)
-
-print("Caracteres:   {}".format(CAR))
-print("Posiciones:   {}".format(POS))
-print("Repeticiones: {}".format(MAXBLOCK))
-
-# aqui podria ser clock. pero eso mide el processor time en muchos sistemas
-# por coherencia con otras versiones, queremos medir el wall-time
-# ojo, la version en C usa clock
-begin = time.time()
-
-workers = []
-for n in range(CAR):
-    t = threading.Thread(target=check_and_generate,name=str(n), args= (n,))
-    workers.append(t)
-    t.start()
-
-for i in workers:
-    i.join()
-
-#acabados los calculos, pongo los resultados
-
-end = time.time()
-
-print ("Sum   {0}".format(sumMT))
-print ("SumOK {0}".format(sumOKMT))
-print ("Time: {0}".format((end-begin)*1000))
-        
+if __name__ == '__main__':
+    #las constantes 13, 9, 3
+    CAR = 13
+    POS = 7
+    MAXBLOCK = 3
+    
+    #estos numeros pueden ser grandes, mas de 32 bits
+    #compartidos para todos los threads
+    sumMT = 0
+    sumOKMT = 0
+    
+    lock = threading.Lock()
+    
+    logging.basicConfig(level=logging.INFO)
+    
+    if len(sys.argv) == 4:
+        car = int(sys.argv[1])
+        pos = int(sys.argv[2])
+        maxblock = int(sys.argv[3])
+    else:
+        car = CAR
+        pos = POS
+        maxblock = MAXBLOCK
+    
+    print("Caracteres:   {}".format(car))
+    print("Posiciones:   {}".format(pos))
+    print("Repeticiones: {}".format(maxblock))
+    
+    # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
+    # por coherencia con otras versiones, queremos medir el wall-time
+    # ojo, la version en C usa clock
+    begin = time.time()
+    
+    workers = []
+    for n in range(car):
+        t = threading.Thread(target=check_and_generate,name=str(n), args= (n,))
+        workers.append(t)
+        t.start()
+    
+    for i in workers:
+        i.join()
+    
+    #acabados los calculos, pongo los resultados
+    
+    end = time.time()
+    
+    print ("Sum   {0}".format(sumMT))
+    print ("SumOK {0}".format(sumOKMT))
+    print ("Time: {0}".format((end-begin)*1000))
+            
 

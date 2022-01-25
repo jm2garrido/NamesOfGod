@@ -24,11 +24,12 @@ import time
 import array
 import multiprocessing as mp
 import logging
+import sys
 
 def check_and_generate(first_number):
 
     #logging.info("Entering {0}".format(mp.current_process().name))
-    sum_ = 0
+    sum_= 0
     sumOK = 0
     cell = array.array('i')
 
@@ -45,10 +46,10 @@ def check_and_generate(first_number):
 
         #bucle chapucero para emular el for de java
         k=0
-        while ((numOK) and (k<POS-MAXBLOCK)):
+        while ((numOK) and (k<pos-maxblock)):
             numOK=False
             e = k + 1
-            while ((not numOK) and (e < k+MAXBLOCK+1)):
+            while ((not numOK) and (e < k+maxblock+1)):
                 #print "k: {0} e: {e}".format(k,e)
                 if (cell[k]!=cell[e]):
                     #print "Verdad"
@@ -63,11 +64,11 @@ def check_and_generate(first_number):
         cell[0]+=1
 
         i=0    
-        while(cell[i]>=CAR):
+        while(cell[i]>=car):
             cell[i]=0
             i+=1
             # POS-1, POS is now fixed in thread
-            if i<POS-1:
+            if i<pos-1:
                 cell[i]+=1
             else:
                 ended= True
@@ -78,7 +79,6 @@ def check_and_generate(first_number):
 
 
 if __name__ == '__main__':
-
     #las constantes 13, 9, 3
     CAR = 13
     POS = 7
@@ -87,9 +87,18 @@ if __name__ == '__main__':
     
     logging.basicConfig(level=logging.INFO)
     
-    print("Caracteres:   {}".format(CAR))
-    print("Posiciones:   {}".format(POS))
-    print("Repeticiones: {}".format(MAXBLOCK))
+    if len(sys.argv) == 4:
+        car = int(sys.argv[1])
+        pos = int(sys.argv[2])
+        maxblock = int(sys.argv[3])
+    else:
+        car = CAR
+        pos = POS
+        maxblock = MAXBLOCK
+    
+    print("Caracteres:   {}".format(car))
+    print("Posiciones:   {}".format(pos))
+    print("Repeticiones: {}".format(maxblock))
     
     # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
     # por coherencia con otras versiones, queremos medir el wall-time
@@ -97,9 +106,9 @@ if __name__ == '__main__':
     begin = time.time()
     
     with mp.Pool(processes=4) as pool:
-        result = pool.map(check_and_generate, range(CAR))
+        result = pool.map(check_and_generate, range(car))
         
-    print(result)
+    #print(result)
     
     sum_list, sumOK_list = zip(*result)
 
