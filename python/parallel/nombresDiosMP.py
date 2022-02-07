@@ -26,6 +26,7 @@ import multiprocessing as mp
 import logging
 import sys
 import ctypes
+import os
 
 def check_and_generate(first_number,sumMT,sumOKMT):
 
@@ -111,6 +112,7 @@ if __name__ == '__main__':
     print("Caracteres:   {}".format(car))
     print("Posiciones:   {}".format(pos))
     print("Repeticiones: {}".format(maxblock))
+    print("Num process: {} Cores: {}".format(car, os.cpu_count()))
     
     # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
     # por coherencia con otras versiones, queremos medir el wall-time

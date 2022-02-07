@@ -25,6 +25,7 @@ import array
 import multiprocessing as mp
 import logging
 import sys
+import os
 
 def check_and_generate(first_number):
 
@@ -83,11 +84,12 @@ if __name__ == '__main__':
     CAR = 13
     POS = 7
     MAXBLOCK = 3
-    
+    #new variable, the number of process
+    num_process = 4
     
     logging.basicConfig(level=logging.INFO)
     
-    if len(sys.argv) == 4:
+    if len(sys.argv) >= 4:
         car = int(sys.argv[1])
         pos = int(sys.argv[2])
         maxblock = int(sys.argv[3])
@@ -96,16 +98,25 @@ if __name__ == '__main__':
         pos = POS
         maxblock = MAXBLOCK
     
+    if len(sys.argv) == 5:
+        num_process = int(sys.argv[4])
+    if num_process == 0:
+        # none means that python chooses the number of processes
+        num_process == None
+        
+    
     print("Caracteres:   {}".format(car))
     print("Posiciones:   {}".format(pos))
     print("Repeticiones: {}".format(maxblock))
+    print("Num process: {} Cores: {}".format(num_process, os.cpu_count()))
+    # according documentation, if num_process is None, it chooses cpu_count
     
     # aqui podria ser clock. pero eso mide el processor time en muchos sistemas
     # por coherencia con otras versiones, queremos medir el wall-time
     # ojo, la version en C usa clock
     begin = time.time()
     
-    with mp.Pool(processes=4) as pool:
+    with mp.Pool(processes=num_process) as pool:
         result = pool.map(check_and_generate, range(car))
         
     #print(result)
