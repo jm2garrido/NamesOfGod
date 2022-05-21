@@ -1,9 +1,10 @@
-#cython: language_level=3
+#cython: language_level=3, boundscheck=False
 """
 NamesOfGod
 
 Naive cython version
 """
+
 __author__ = "Jose Miguel Garrido"
 __copyright__ = "(C) 2022 Jose Miguel Garrido"
 """
@@ -21,25 +22,30 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import array
+from libc.stdlib cimport malloc, free
 
-def nombresDios(car,pos,maxblock):
+def nombresDios(int car,int pos,int maxblock):
     #estos numeros pueden ser grandes, mas de 32 bits
     # hay que usar los numeros de precision arbitraria
-    sum_ = 0
-    sumOK = 0
+    cdef long long sum_ = 0
+    cdef long long sumOK = 0
 
-    # matriz eficiente de enteros
-    cell = array.array('i',pos * [ 0 ])
+    cdef bint ended = False, numOK
+    cdef int k, e, i
+    
+    cdef int *cell = <int *> malloc(pos * sizeof(int))
+    #here we should test that cell is not null
+    # very important, inicialization!
+    for i in range(pos):
+        cell[i] = 0
 
-    ended = False
     while not ended:
         sum_+=1
 
         numOK = True
 
         #bucle chapucero para emular el for de java
-        k=0
+        k = 0
         while ((numOK) and (k<pos-maxblock)):
             numOK=False
             e = k + 1
@@ -67,4 +73,8 @@ def nombresDios(car,pos,maxblock):
                 ended= True
                 break
             
+    # free should be in a finalize, to be sure that memory is freed always        
+    free(cell)
+            
+    
     return sum_,sumOK

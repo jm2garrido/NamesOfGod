@@ -1,9 +1,10 @@
-#cython: language_level=3
+#cython: language_level=3, boundscheck=False
 """
 NamesOfGod
 
-Naive cython version
+Typed cython version, using a memory view
 """
+
 __author__ = "Jose Miguel Garrido"
 __copyright__ = "(C) 2022 Jose Miguel Garrido"
 """
@@ -23,23 +24,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import array
 
-def nombresDios(car,pos,maxblock):
+def nombresDios(int car,int pos,int maxblock):
     #estos numeros pueden ser grandes, mas de 32 bits
     # hay que usar los numeros de precision arbitraria
-    sum_ = 0
-    sumOK = 0
+    cdef long long sum_ = 0
+    cdef long long sumOK = 0
+
+    cdef bint ended = False, numOK
+    cdef int k, e, i
 
     # matriz eficiente de enteros
-    cell = array.array('i',pos * [ 0 ])
+    cell_array = array.array('i',pos * [ 0 ])
+    # a memory view
+    cdef int[:] cell = cell_array
 
-    ended = False
     while not ended:
         sum_+=1
 
         numOK = True
 
         #bucle chapucero para emular el for de java
-        k=0
+        k = 0
         while ((numOK) and (k<pos-maxblock)):
             numOK=False
             e = k + 1

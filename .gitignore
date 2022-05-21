@@ -112,3 +112,5 @@ hs_err_pid*
 /C/nombresDios1_4
 /C/nombresDios1_5
 /C/nombresDios1_6
+/python/cython/*.html
+/python/cython/*.c

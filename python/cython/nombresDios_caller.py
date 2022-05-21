@@ -26,12 +26,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
 import sys
-import nd_naive
+#import nd_naive
+#import nd_stage_1
+import nd_stage_2
 
 if __name__ == '__main__':
     #las constantes
     CAR = 13
-    POS = 7
+    POS = 9
     MAXBLOCK = 3
 
     if len(sys.argv) == 4:
@@ -53,7 +55,8 @@ if __name__ == '__main__':
     # ojo, la version en C usa clock
     begin = time.time()
 
-    sum_, sumOK = nd_naive.nombresDios(car,pos,maxblock)
+    #sum_, sumOK = nd_naive.nombresDios(car,pos,maxblock)
+    sum_, sumOK = nd_stage_2.nombresDios(car,pos,maxblock)
 
     #acabados los calculos, pongo los resultados
 

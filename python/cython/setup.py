@@ -10,5 +10,5 @@ from setuptools import setup
 from Cython.Build import cythonize
 
 setup(
-    ext_modules = cythonize("nd_naive.pyx")
+    ext_modules = cythonize(["nd_naive.pyx", "nd_stage_1.pyx", "nd_stage_2.pyx"])
 )
